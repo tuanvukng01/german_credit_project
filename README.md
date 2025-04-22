@@ -174,3 +174,9 @@ Future improvements could involve additional feature engineering, advanced hyper
 
 This detailed report combines robust statistical analysis and visual insights to provide comprehensive understanding and actionable recommendations for credit risk assessment.
 
+## License
+
+This project is licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.  
+You may not reuse, remix, or redistribute any part of this project for commercial or derivative purposes.
+
+Read the full license [here](https://creativecommons.org/licenses/by-nc-nd/4.0/).
