@@ -3,6 +3,32 @@
 ## Overview
 This report provides an extensive exploratory data analysis (EDA) and classification model development conducted on the German Credit dataset, sourced from the UCI Machine Learning Repository. The aim of the project was to thoroughly analyze dataset features, visualize insights, and construct predictive models capable of classifying applicants into distinct categories of credit risk (Good Risk vs. Bad Risk).
 
+## Table of Contents
+
+### 📊 Data Preparation and Exploratory Analysis
+1. Setup & Imports
+2. Load Data & Rename Columns
+3. Descriptive Statistics
+4. Class Balance
+5. Numerical Distributions by Risk
+6. Categorical Distributions by Risk
+7. Correlation Heatmap
+8. Normality Check (Q–Q Plots)
+9. Boxplot: Loan Amount by Risk
+
+### 🤖 Model Training, Evaluation, and Reporting
+10. Train/Test Split
+11. Feature Scaling
+12. PCA Analysis
+13. Addressing Class Imbalance
+14. Classification Models <br>
+&emsp;&emsp;• 14.1 Helper Functions  <br>
+&emsp;&emsp;• 14.2 Train & Cross‑Validate  <br>
+15. Performance Visualization
+16. Exporting Results for Reporting <br>
+&emsp;&emsp;• 16.1 Feature Importances (Random Forest)  <br>
+&emsp;&emsp;• 16.2 Model Summary Table
+17. Next Steps
 ## Dataset Description
 The German Credit dataset contains 1,000 loan application records. Each record is characterized by various numeric, categorical, ordinal, and encoded features related to the applicant’s financial status, personal information, loan purpose, and more. The main classification target is the applicant’s credit risk:
 
