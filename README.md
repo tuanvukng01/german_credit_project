@@ -37,30 +37,41 @@ The German Credit dataset contains 1,000 loan application records. Each record i
 
 For more details, refer to the dataset source: [UCI German Credit Data](https://archive.ics.uci.edu/ml/datasets/Statlog+(German+Credit+Data)).
 
-## 🧹 Data Preparation and Preprocessing
+## 🔄 Data Extraction and Preparation Pipeline
 
-The dataset was initially loaded from a CSV file (`data/raw/german_credit.csv`) containing a mix of numerical and categorical variables, many of which were **custom-coded** using abbreviations or numerical codes. Below is a preview of the raw dataset before any transformation:
+To modularize and automate the transformation of the raw credit dataset, a lightweight ETL pipeline has been implemented using Python and SQL.
 
-![Raw Data Preview](plots/raw_data_preview.png)
+- **Extract**: Data is read from a local SQLite database (`data/german_credit.db`).
+- **Transform**: Feature engineering is applied using a SQL view defined in [`sql/feature_engineering.sql`](sql/feature_engineering.sql), which decodes categorical codes and creates interpretable features.
+- **Load**: The transformed dataset is exported to a CSV file (`data/processed/credit_features.csv`) for downstream analysis.
 
-To make the data human-readable and ready for analysis, a SQL script was executed to **decode the custom features** using mappings from the original dataset documentation. Additionally, columns were renamed using a JSON-based mapping to improve interpretability.
+This process is encapsulated in the script [`etl/run_etl_pipeline.py`](etl/run_etl_pipeline.py), enabling consistent preprocessing and reproducibility across environments.
 
-The resulting **processed dataset** contains **98 columns**:
-- **21 original features**
-- **77 derived features** from one-hot encoding and engineered variables  
-This transformed dataset was saved to:  
-`data/processed/credit_features.csv`
+Run the pipeline with:
+```bash
+python etl/run_etl_pipeline.py
+```
 
 ---
 
-### 🧼 Cleaning and Encoding
+## 🧼 Additional Cleaning and Encoding
 
-- **Missing categorical values** were imputed with a default `"Unknown"` label to preserve completeness without data loss.
-- The column `Personal Status & Sex` was **binary encoded** to extract a simple `Sex` feature.
-- The target label `Risk Label` was mapped to a new column `Target`, where:
+After generating the processed dataset via the ETL pipeline, additional preparation steps were applied to optimize the data for modeling:
+
+- **Missing categorical values** were imputed with a default `"Unknown"` label to retain completeness without loss.
+- The column `Personal Status & Sex` was **binary encoded** to extract a simplified `Sex` feature.
+- The target label `Risk Label` was remapped to a new column `Target`, where:
   - `1` represents **Good Credit Risk**
-  - `0` represents **Bad Credit Risk**  
-This encoding made the target suitable for binary classification tasks.
+  - `0` represents **Bad Credit Risk**
+
+The final modeling dataset contains **98 features**:
+- **21 original features**
+- **77 derived features** generated through one-hot encoding and engineered variables.
+
+Below is a snapshot of the raw dataset prior to transformation:
+
+![Raw Data Preview](plots/raw_data_preview.png)
+---
 ## Exploratory Data Analysis (EDA)
 
 The exploratory phase involved detailed statistical analysis and visualization:
@@ -152,6 +163,8 @@ Future improvements could involve additional feature engineering, advanced hyper
 │   └── german_credit.db
 ├── sql
 │   └── feature_engineering.sql
+├── databricks
+│   └── german_credit_databricks.py
 ├── plots
 │   ├── credit_eda.svg
 │   ├── numerical_distribution.svg
@@ -171,6 +184,18 @@ Future improvements could involve additional feature engineering, advanced hyper
 └── requirements.txt
 
 ```
+## 💻 Databricks Integration
+
+A version of this notebook was ported to [Databricks](https://www.databricks.com/) for scalable development, exploration, and experimentation.  
+It is available as a Python script in the [`databricks/`](databricks/) directory:
+
+- [`german_credit_databricks.py`](databricks/german_credit_databricks.py): A Databricks-compatible version of the full analysis pipeline, structured with `# COMMAND ----------` cells for direct execution.
+
+This version enables:
+- Direct use of Spark and Delta Lake for scalable data loading and persistence
+- Integration with MLflow tracking (if enabled in your workspace)
+- Seamless experimentation with parameter widgets and notebooks
+
 
 This detailed report combines robust statistical analysis and visual insights to provide comprehensive understanding and actionable recommendations for credit risk assessment.
 
